@@ -3,17 +3,17 @@ import 'package:flutter/material.dart';
 
 // import 'events_screen.dart';
 
-class ProductDetailsScreen extends StatelessWidget {
+class VenueDetailsScreen extends StatelessWidget {
   final product;
 
-  ProductDetailsScreen({required this.product});
+  VenueDetailsScreen({required this.product});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Event Detail',
+          'Venue Detail',
           style: TextStyle(
               color: Color.fromARGB(
                   218, 228, 135, 4), // Replace with your desired text color
@@ -42,7 +42,7 @@ class ProductDetailsScreen extends StatelessWidget {
             SizedBox(height: 8),
             Text('Price: \$${product.price}'),
             SizedBox(height: 16),
-            Text(product.name),
+            Text(product.description),
           ],
         ),
       ),

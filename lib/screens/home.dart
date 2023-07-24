@@ -2,6 +2,7 @@ import 'package:blog_app/screens/post_screen.dart';
 import 'package:blog_app/screens/product_screen.dart';
 // import 'package:blog_app/screens/product_screen%20copy.dart';
 import 'package:blog_app/screens/profile.dart';
+import 'package:blog_app/screens/venues_screen.dart';
 import 'package:blog_app/services/user_service.dart';
 import 'package:flutter/material.dart';
 
@@ -77,7 +78,7 @@ class _HomeState extends State<Home> {
             Center(child: PostScreen()),
             Center(child: SearchScreen()),
             Center(child: ProductScreen()),
-            Center(child: Text('Payments')),
+            Center(child: VenuesScreen()),
             Center(child: Profile()),
           ],
           onPageChanged: (index) {
@@ -138,8 +139,8 @@ class _HomeState extends State<Home> {
                 label: 'Events',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.wallet, color: Colors.black38),
-                label: 'Payments',
+                icon: Icon(Icons.assured_workload, color: Colors.black38),
+                label: 'Venues',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.person, color: Colors.black38),

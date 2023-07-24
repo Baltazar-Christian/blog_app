@@ -1,15 +1,19 @@
 // import 'user.dart';
 
-class Product {
+class Venue {
   int? id;
   String? name;
+  int? capacity;
+  String? address;
   String? description;
   String? image;
   String? price;
 
-  Product({
+  Venue({
     this.id,
     this.name,
+    this.capacity,
+    this.address,
     this.description,
     this.image,
     this.price,
@@ -17,12 +21,14 @@ class Product {
 
 // map json to post model
 
-  factory Product.fromJson(Map<String, dynamic> json) {
-    return Product(
+  factory Venue.fromJson(Map<String, dynamic> json) {
+    return Venue(
         id: json['id'],
-        name: json['name'],
+        name: json['venue_name'],
+        capacity: json['capacity'],
+        address: json['address'],
         description: json['description'],
-        image: json['image_url'],
+        image: json['image'],
         price: json['price']);
   }
 }

@@ -1,9 +1,11 @@
 import 'package:blog_app/constant.dart';
 import 'package:blog_app/models/api_response.dart';
+import 'package:blog_app/screens/venue_detail_screen.dart';
 // import 'package:blog_app/models/post.dart';
 // import 'package:blog_app/screens/comment_screen.dart';
 import 'package:blog_app/services/post_service.dart';
 import 'package:blog_app/services/user_service.dart';
+import 'package:blog_app/services/venue_service.dart';
 import 'package:flutter/material.dart';
 
 import '../models/product.dart';
@@ -12,20 +14,20 @@ import 'event_detail_screen.dart';
 import 'login.dart';
 // import 'post_form.dart';
 
-class ProductScreen extends StatefulWidget {
+class VenuesScreen extends StatefulWidget {
   @override
   _PostScreenState createState() => _PostScreenState();
 }
 
-class _PostScreenState extends State<ProductScreen> {
+class _PostScreenState extends State<VenuesScreen> {
   List<dynamic> _postList = [];
   int userId = 0;
   bool _loading = true;
 
   // get all posts
-  Future<void> retrievePosts() async {
+  Future<void> retrieveVenues() async {
     userId = await getUserId();
-    ApiResponse response = await getProducts();
+    ApiResponse response = await getVenues();
 
     if (response.error == null) {
       // print(response.data);
@@ -58,7 +60,7 @@ class _PostScreenState extends State<ProductScreen> {
 
   @override
   void initState() {
-    retrievePosts();
+    retrieveVenues();
     super.initState();
   }
 
@@ -72,7 +74,7 @@ class _PostScreenState extends State<ProductScreen> {
           ))
         : RefreshIndicator(
             onRefresh: () {
-              return retrievePosts();
+              return retrieveVenues();
             },
             child: ListView.builder(
               itemCount: _postList.length,
@@ -91,7 +93,7 @@ class _PostScreenState extends State<ProductScreen> {
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
-                                ProductDetailsScreen(product: _postList[index]),
+                                VenueDetailsScreen(product: _postList[index]),
                           ),
                         );
                       },
@@ -102,7 +104,7 @@ class _PostScreenState extends State<ProductScreen> {
                         context,
                         MaterialPageRoute(
                           builder: (context) =>
-                              ProductDetailsScreen(product: _postList[index]),
+                              VenueDetailsScreen(product: _postList[index]),
                         ),
                       );
                     },

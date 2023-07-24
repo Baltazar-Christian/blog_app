@@ -8,6 +8,7 @@ const logoutURL = '$baseURL/logout';
 const userURL = '$baseURL/user';
 const postsURL = '$baseURL/posts';
 const productsURL = '$baseURL/products';
+const venuesURL = '$baseURL/venues';
 const commentsURL = '$baseURL/comments';
 
 // ----- Errors -----

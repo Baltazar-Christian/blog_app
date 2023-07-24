@@ -80,8 +80,14 @@ class _PostScreenState extends State<ProductScreen> {
                 final product = _postList[index];
                 return Card(
                   child: ListTile(
-                    leading: Image.network(product.image),
-                    title: Text(product.name),
+                    leading: Image.network(
+                      product.image,
+                    ),
+                    title: Text(
+                      product.name,
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    ),
                     subtitle: Text('Price: ' + product.price),
                     trailing: IconButton(
                       icon: Icon(Icons.visibility),

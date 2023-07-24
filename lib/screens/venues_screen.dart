@@ -83,7 +83,11 @@ class _PostScreenState extends State<VenuesScreen> {
                 return Card(
                   child: ListTile(
                     leading: Image.network(product.image),
-                    title: Text(product.name),
+                    title: Text(
+                      product.name,
+                      style:
+                          TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+                    ),
                     subtitle: Text('Price: ' + product.price),
                     trailing: IconButton(
                       icon: Icon(Icons.visibility),

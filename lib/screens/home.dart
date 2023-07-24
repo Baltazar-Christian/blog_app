@@ -124,19 +124,20 @@ class _HomeState extends State<Home> {
               BottomNavigationBar(
             items: [
               BottomNavigationBarItem(
-                icon: Icon(Icons.home, color: Colors.black38),
-                label: 'Home',
+                icon: Icon(Icons.list, color: Colors.black38),
+                label: 'Events',
               ),
               BottomNavigationBarItem(
                 icon: Icon(
-                  Icons.search,
+                  Icons.add,
                   color: Colors.black38,
                 ),
-                label: 'Search',
+                label: 'Create',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.list, color: Colors.black38),
-                label: 'Events',
+                icon:
+                    Icon(Icons.calendar_month_outlined, color: Colors.black38),
+                label: 'My Events',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.assured_workload, color: Colors.black38),

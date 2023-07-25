@@ -6,9 +6,10 @@ import 'package:blog_app/screens/venues_screen.dart';
 import 'package:blog_app/services/user_service.dart';
 import 'package:flutter/material.dart';
 
+import 'add_event_screen.dart';
 import 'login.dart';
-import 'post_form.dart';
-import 'search_screen.dart';
+// import 'post_form.dart';
+// import 'search_screen.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -76,7 +77,7 @@ class _HomeState extends State<Home> {
           controller: _pageController,
           children: [
             Center(child: PostScreen()),
-            Center(child: SearchScreen()),
+            Center(child: AddEventScreen()),
             Center(child: ProductScreen()),
             Center(child: VenuesScreen()),
             Center(child: Profile()),
@@ -87,18 +88,18 @@ class _HomeState extends State<Home> {
             });
           },
         ),
-        floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => PostForm(
-                        title: 'Add new post',
-                      )));
-            },
-            child: Icon(
-              Icons.calendar_month,
-              color: Color.fromARGB(218, 228, 135, 4),
-            ),
-            backgroundColor: Colors.black),
+        // floatingActionButton: FloatingActionButton(
+        //     onPressed: () {
+        //       Navigator.of(context).push(MaterialPageRoute(
+        //           builder: (context) => PostForm(
+        //                 title: 'Add new post',
+        //               )));
+        //     },
+        //     child: Icon(
+        //       Icons.calendar_month,
+        //       color: Color.fromARGB(218, 228, 135, 4),
+        //     ),
+        //     backgroundColor: Colors.black),
         // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         bottomNavigationBar: BottomAppBar(
           notchMargin: 5,
@@ -124,23 +125,22 @@ class _HomeState extends State<Home> {
               BottomNavigationBar(
             items: [
               BottomNavigationBarItem(
-                icon: Icon(Icons.list, color: Colors.black38),
+                icon: Icon(Icons.home, color: Colors.black38),
                 label: 'Events',
               ),
               BottomNavigationBarItem(
                 icon: Icon(
-                  Icons.add,
+                  Icons.assignment_add,
                   color: Colors.black38,
                 ),
                 label: 'Create',
               ),
               BottomNavigationBarItem(
-                icon:
-                    Icon(Icons.calendar_month_outlined, color: Colors.black38),
+                icon: Icon(Icons.assignment, color: Colors.black38),
                 label: 'My Events',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.assured_workload, color: Colors.black38),
+                icon: Icon(Icons.assignment_turned_in, color: Colors.black38),
                 label: 'Venues',
               ),
               BottomNavigationBarItem(

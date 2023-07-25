@@ -12,6 +12,7 @@ class EventDetailScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Event Details'),
+        backgroundColor: Colors.black,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -21,7 +22,7 @@ class EventDetailScreen extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.blue[50],
+                color: Color.fromARGB(218, 249, 151, 13),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Column(
@@ -80,7 +81,7 @@ class EventInfoCard extends StatelessWidget {
       padding: EdgeInsets.all(12),
       width: 140,
       decoration: BoxDecoration(
-        color: Colors.blue[100],
+        color: Color.fromARGB(218, 249, 221, 182),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Column(

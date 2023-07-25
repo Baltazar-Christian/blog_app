@@ -70,7 +70,7 @@ class _HomeState extends State<Home> {
           controller: _pageController,
           children: [
             Center(child: HomeScreen()),
-            Center(child: AddEventScreen()),
+            Center(child: PostScreen()),
             Center(child: EventsScreen()),
             Center(child: VenuesScreen()),
             Center(child: Profile()),
@@ -119,22 +119,22 @@ class _HomeState extends State<Home> {
             items: [
               BottomNavigationBarItem(
                 icon: Icon(Icons.home, color: Colors.black38),
-                label: 'Events',
+                label: 'Home',
               ),
               BottomNavigationBarItem(
                 icon: Icon(
-                  Icons.assignment_add,
+                  Icons.airplay,
                   color: Colors.black38,
                 ),
-                label: 'Create',
+                label: 'Explore',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.assignment, color: Colors.black38),
-                label: 'My Events',
+                label: 'Events',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.assignment_turned_in, color: Colors.black38),
-                label: 'Venues',
+                icon: Icon(Icons.group, color: Colors.black38),
+                label: 'Friends',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.person, color: Colors.black38),

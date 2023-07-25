@@ -1,249 +1,167 @@
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'dart:io';
 
-class AddEventScreen extends StatefulWidget {
+import 'package:blog_app/constant.dart';
+import 'package:blog_app/models/api_response.dart';
+import 'package:blog_app/models/post.dart';
+import 'package:blog_app/services/post_service.dart';
+import 'package:blog_app/services/user_service.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+
+import 'login.dart';
+
+class PostForm extends StatefulWidget {
+  final Post? post;
+  final String? title;
+
+  PostForm({this.post, this.title});
+
   @override
-  _AddEventScreenState createState() => _AddEventScreenState();
+  _PostFormState createState() => _PostFormState();
 }
 
-class _AddEventScreenState extends State<AddEventScreen> {
-  final _formKey = GlobalKey<FormState>();
+class _PostFormState extends State<PostForm> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _txtControllerBody = TextEditingController();
+  bool _loading = false;
+  File? _imageFile;
+  final _picker = ImagePicker();
 
-  String eventName = '';
-  String eventDescription = '';
-  DateTime startDate = DateTime.now();
-  DateTime endDate = DateTime.now();
-
-  void _saveEvent() async {
-    if (_formKey.currentState!.validate()) {
-      Event newEvent = Event(
-        eventName: eventName,
-        eventDescription: eventDescription,
-        startDate: startDate,
-        endDate: endDate,
-      );
-
-      // Convert Event object to JSON
-      String eventJson = jsonEncode(newEvent);
-
-      try {
-        final response = await http.post(
-          Uri.parse('http://your-laravel-api-url/api/events'),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: eventJson,
-        );
-
-        if (response.statusCode == 201) {
-          // Event successfully created. Handle success behavior.
-          // You can navigate back to the previous screen or show a success message.
-        } else {
-          // Handle error response. You can show an error message to the user.
-        }
-      } catch (e) {
-        // Handle any exceptions that occurred during the HTTP request.
-        // You can show an error message or perform any necessary error handling.
-      }
+  Future getImage() async {
+    final pickedFile = await _picker.getImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path);
+      });
     }
+  }
+
+  void _createPost() async {
+    String? image = _imageFile == null ? null : getStringImage(_imageFile);
+    ApiResponse response = await createPost(_txtControllerBody.text, image);
+
+    if (response.error == null) {
+      Navigator.of(context).pop();
+    } else if (response.error == unauthorized) {
+      logout().then((value) => {
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => Login()),
+                (route) => false)
+          });
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('${response.error}')));
+      setState(() {
+        _loading = !_loading;
+      });
+    }
+  }
+
+  // edit post
+  void _editPost(int postId) async {
+    ApiResponse response = await editPost(postId, _txtControllerBody.text);
+    if (response.error == null) {
+      Navigator.of(context).pop();
+    } else if (response.error == unauthorized) {
+      logout().then((value) => {
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => Login()),
+                (route) => false)
+          });
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('${response.error}')));
+      setState(() {
+        _loading = !_loading;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    if (widget.post != null) {
+      _txtControllerBody.text = widget.post!.body ?? '';
+    }
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Event'),
+        title: Text(
+          'Add New Post',
+          style: TextStyle(
+              color: Color.fromARGB(
+                  218, 228, 135, 4), // Replace with your desired text color
+              fontSize: 20 // Optional, adjust the font size as needed
+              // Optional, adjust the font weight as needed
+              ),
+        ),
+        backgroundColor: Colors.black,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+      body: _loading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : ListView(
               children: [
-                TextFormField(
-                  decoration: InputDecoration(labelText: 'Event Name'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter the event name.';
-                    }
-                    return null;
-                  },
-                  onChanged: (value) {
-                    setState(() {
-                      eventName = value;
-                    });
-                  },
-                ),
-                SizedBox(height: 16.0),
-                TextFormField(
-                  maxLines: 3,
-                  decoration: InputDecoration(labelText: 'Event Description'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter the event description.';
-                    }
-                    return null;
-                  },
-                  onChanged: (value) {
-                    setState(() {
-                      eventDescription = value;
-                    });
-                  },
-                ),
-                SizedBox(height: 16.0),
-                DateTimePicker(
-                  labelText: 'Start Date and Time',
-                  selectedDate: startDate,
-                  selectedTime: TimeOfDay.fromDateTime(startDate),
-                  onSelectedDate: (DateTime date) {
-                    setState(() {
-                      startDate = date;
-                    });
-                  },
-                  onSelectedTime: (TimeOfDay time) {
-                    setState(() {
-                      startDate = DateTime(
-                        startDate.year,
-                        startDate.month,
-                        startDate.day,
-                        time.hour,
-                        time.minute,
-                      );
-                    });
-                  },
-                ),
-                SizedBox(height: 16.0),
-                DateTimePicker(
-                  labelText: 'End Date and Time',
-                  selectedDate: endDate,
-                  selectedTime: TimeOfDay.fromDateTime(endDate),
-                  onSelectedDate: (DateTime date) {
-                    setState(() {
-                      endDate = date;
-                    });
-                  },
-                  onSelectedTime: (TimeOfDay time) {
-                    setState(() {
-                      endDate = DateTime(
-                        endDate.year,
-                        endDate.month,
-                        endDate.day,
-                        time.hour,
-                        time.minute,
-                      );
-                    });
-                  },
-                ),
-                SizedBox(height: 16.0),
-                ElevatedButton(
-                  onPressed: _saveEvent,
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors
-                        .orange, // Change the button background color to orange
-                    onPrimary:
-                        Colors.black, // Change the button text color to black
+                widget.post != null
+                    ? SizedBox()
+                    : Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 200,
+                        decoration: BoxDecoration(
+                            image: _imageFile == null
+                                ? null
+                                : DecorationImage(
+                                    image: FileImage(_imageFile ?? File('')),
+                                    fit: BoxFit.cover)),
+                        child: Center(
+                          child: IconButton(
+                            icon: Icon(Icons.image,
+                                size: 50, color: Colors.black38),
+                            onPressed: () {
+                              getImage();
+                            },
+                          ),
+                        ),
+                      ),
+                Form(
+                  key: _formKey,
+                  child: Padding(
+                    padding: EdgeInsets.all(8),
+                    child: TextFormField(
+                      controller: _txtControllerBody,
+                      keyboardType: TextInputType.multiline,
+                      maxLines: 9,
+                      validator: (val) =>
+                          val!.isEmpty ? 'Post body is required' : null,
+                      decoration: InputDecoration(
+                          hintText: "Post body...",
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(width: 1, color: Colors.black38))),
+                    ),
                   ),
-                  child: Text('Save Event'),
                 ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8),
+                  child: kTextButton('Post', () {
+                    if (_formKey.currentState!.validate()) {
+                      setState(() {
+                        _loading = !_loading;
+                      });
+                      if (widget.post == null) {
+                        _createPost();
+                      } else {
+                        _editPost(widget.post!.id ?? 0);
+                      }
+                    }
+                  }),
+                )
               ],
             ),
-          ),
-        ),
-      ),
     );
-  }
-}
-
-class DateTimePicker extends StatelessWidget {
-  final String labelText;
-  final DateTime selectedDate;
-  final TimeOfDay selectedTime;
-  final Function(DateTime) onSelectedDate;
-  final Function(TimeOfDay) onSelectedTime;
-
-  DateTimePicker({
-    required this.labelText,
-    required this.selectedDate,
-    required this.selectedTime,
-    required this.onSelectedDate,
-    required this.onSelectedTime,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          labelText,
-          style: TextStyle(
-              fontSize: 16.0,
-              fontWeight: FontWeight.bold,
-              color: Colors.black), // Change the label color to black
-        ),
-        SizedBox(height: 8.0),
-        Row(
-          children: [
-            Expanded(
-              child: TextButton(
-                onPressed: () async {
-                  final DateTime? pickedDate = await showDatePicker(
-                    context: context,
-                    initialDate: selectedDate,
-                    firstDate: DateTime(2000),
-                    lastDate: DateTime(2101),
-                  );
-                  if (pickedDate != null) {
-                    onSelectedDate(pickedDate);
-                  }
-                },
-                child: Text('${selectedDate.toLocal()}'.split(' ')[0]),
-              ),
-            ),
-            Expanded(
-              child: TextButton(
-                onPressed: () async {
-                  final TimeOfDay? pickedTime = await showTimePicker(
-                    context: context,
-                    initialTime: selectedTime,
-                  );
-                  if (pickedTime != null) {
-                    onSelectedTime(pickedTime);
-                  }
-                },
-                child: Text(selectedTime.format(context)),
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-}
-
-class Event {
-  String eventName;
-  String eventDescription;
-  DateTime startDate;
-  DateTime endDate;
-
-  Event({
-    required this.eventName,
-    required this.eventDescription,
-    required this.startDate,
-    required this.endDate,
-  });
-
-  // Convert Event object to JSON
-  Map<String, dynamic> toJson() {
-    return {
-      'event_name': eventName,
-      'event_description': eventDescription,
-      'start_date': startDate.toIso8601String(),
-      'end_date': endDate.toIso8601String(),
-    };
   }
 }

@@ -9,6 +9,7 @@ const userURL = '$baseURL/user';
 const postsURL = '$baseURL/posts';
 const productsURL = '$baseURL/products';
 const venuesURL = '$baseURL/venues';
+const eventsURL = '$baseURL/events';
 const commentsURL = '$baseURL/comments';
 
 // ----- Errors -----

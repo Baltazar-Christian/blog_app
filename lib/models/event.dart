@@ -18,9 +18,9 @@ class Event {
   factory Event.fromJson(Map<String, dynamic> json) {
     return Event(
         id: json['id'],
-        eventName: json['eventName'],
-        eventDescription: json['capacity'],
-        startDate: json['address'],
-        endDate: json['description']);
+        eventName: json['event_name'],
+        eventDescription: json['event_description'],
+        startDate: json['start_date'],
+        endDate: json['end_date']);
   }
 }

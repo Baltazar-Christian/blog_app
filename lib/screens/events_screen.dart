@@ -1,8 +1,11 @@
 import 'dart:convert';
 
 import 'package:blog_app/screens/add_event_screen.dart';
+import 'package:blog_app/screens/single_event.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+
+import '../services/user_service.dart';
 
 class Event {
   final int id;
@@ -44,16 +47,27 @@ class _EventsScreenState extends State<EventsScreen> {
   }
 
   Future<void> fetchEvents() async {
+    String token = await getToken();
     final response = await http.get(
-      Uri.parse('http://your-laravel-api-url/api/events'),
+      Uri.parse('http://192.168.7.249:9000/api/events'),
+      // headers: {
+      //   'Content-Type': 'application/json',
+      //   'Authorization': 'Bearer $token'
+      // },
     );
 
     if (response.statusCode == 200) {
-      final List<dynamic> jsonData = jsonDecode(response.body);
-      setState(() {
-        events = jsonData.map((data) => Event.fromJson(data)).toList();
-      });
+      final jsonData = jsonDecode(response.body);
+      if (jsonData is List) {
+        setState(() {
+          events = jsonData.map((data) => Event.fromJson(data)).toList();
+        });
+      } else {
+        // Handle error when the response is not a List.
+        // Show an error message or perform appropriate error handling.
+      }
     } else {
+      print(response.statusCode);
       // Handle error response.
     }
   }
@@ -64,25 +78,54 @@ class _EventsScreenState extends State<EventsScreen> {
       // appBar: AppBar(
       //   title: Text('Events'),
       // ),
-      body: ListView.builder(
+      body: ListView.separated(
         itemCount: events.length,
         itemBuilder: (context, index) {
           Event event = events[index];
           return ListTile(
-            title: Text(event.eventName),
+            leading: Icon(Icons.event),
+            title: Text(
+              event.eventName,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
             subtitle: Text(event.eventDescription),
-            trailing: Icon(Icons.event),
+            trailing: Icon(Icons.arrow_forward_ios),
+            onTap: () {
+              // Navigate to the EventDetailScreen when the event is tapped.
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => EventDetailScreen(event: event),
+                ),
+              );
+            },
+          );
+        },
+        separatorBuilder: (context, index) {
+          return Divider(
+            color: Colors.grey,
+            thickness: 0.2, // Adjust the thickness of the line as needed.
           );
         },
       ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     Navigator.of(context).pushAndRemoveUntil(
+      //         MaterialPageRoute(builder: (context) => AddEventScreen()),
+      //         (route) => false);
+      //   },
+      //   child: Icon(Icons.add),
+      // ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => AddEventScreen()),
-              (route) => false);
-        },
-        child: Icon(Icons.add),
-      ),
+          onPressed: () {
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => AddEventScreen()));
+          },
+          child: Icon(
+            Icons.calendar_month,
+            color: Color.fromARGB(218, 228, 135, 4),
+          ),
+          backgroundColor: Colors.black),
     );
   }
 }

@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'add_event_screen.dart';
 // import 'add_event_screen3.dart';
 import 'events_screen.dart';
+import 'home_screen.dart';
 import 'login.dart';
 // import 'post_form.dart';
 // import 'search_screen.dart';
@@ -37,48 +38,38 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          leading: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Image.asset(
-              'assets/logo.png', // Replace this with the actual path of your logo image
-              fit: BoxFit
-                  .contain, // Adjust the logo's size to fit within the AppBar
-            ),
-          ),
-          // title: Text(
-          //   'Event',
-          //   style: TextStyle(
-          //     color: Color.fromARGB(
-          //         218, 228, 135, 4), // Replace with your desired text color
-          //     fontSize: 20, // Optional, adjust the font size as needed
-          //     fontWeight:
-          //         FontWeight.bold, // Optional, adjust the font weight as needed
-          //   ),
-          // ),
-          backgroundColor: Colors.black,
-          actions: [
-            IconButton(
-              onPressed: () {
-                logout().then((value) => {
-                      Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(builder: (context) => Login()),
-                          (route) => false)
-                    });
-              },
-              icon: Icon(
-                Icons.exit_to_app,
-                color: Color.fromARGB(218, 228, 135, 4),
-              ),
-            )
-          ],
-        ),
+        // appBar: AppBar(
+        //   leading: Padding(
+        //     padding: const EdgeInsets.all(8.0),
+        //     child: Image.asset(
+        //       'assets/logo.png', // Replace this with the actual path of your logo image
+        //       fit: BoxFit
+        //           .contain, // Adjust the logo's size to fit within the AppBar
+        //     ),
+        //   ),
+        //   backgroundColor: Colors.black,
+        //   actions: [
+        //     IconButton(
+        //       onPressed: () {
+        //         logout().then((value) => {
+        //               Navigator.of(context).pushAndRemoveUntil(
+        //                   MaterialPageRoute(builder: (context) => Login()),
+        //                   (route) => false)
+        //             });
+        //       },
+        //       icon: Icon(
+        //         Icons.exit_to_app,
+        //         color: Color.fromARGB(218, 228, 135, 4),
+        //       ),
+        //     )
+        //   ],
+        // ),
 
         // body: currentIndex == 0 ? PostScreen() : Profile(),
         body: PageView(
           controller: _pageController,
           children: [
-            Center(child: PostScreen()),
+            Center(child: HomeScreen()),
             Center(child: AddEventScreen()),
             Center(child: EventsScreen()),
             Center(child: VenuesScreen()),

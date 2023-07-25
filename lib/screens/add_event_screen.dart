@@ -1,4 +1,5 @@
 import 'package:blog_app/screens/events_screen.dart';
+import 'package:blog_app/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -61,7 +62,26 @@ class _AddEventScreenState extends State<AddEventScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Event'),
+        title: Text(
+          'Add New Post',
+          style: TextStyle(
+              color: Color.fromARGB(
+                  218, 228, 135, 4), // Replace with your desired text color
+              fontSize: 20 // Optional, adjust the font size as needed
+              // Optional, adjust the font weight as needed
+              ),
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.home, color: Color.fromARGB(218, 228, 135, 4)),
+            onPressed: () {
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => Home()),
+                  (route) => false);
+            },
+          ),
+        ],
+        backgroundColor: Colors.black,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

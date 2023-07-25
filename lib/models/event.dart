@@ -1,16 +1,16 @@
 class Event {
-  int id;
-  String eventName;
-  String eventDescription;
-  DateTime startDate;
-  DateTime endDate;
+  int? id;
+  String? eventName;
+  String? eventDescription;
+  String? startDate;
+  String? endDate;
 
   Event({
-    required this.id,
-    required this.eventName,
-    required this.eventDescription,
-    required this.startDate,
-    required this.endDate,
+    this.id,
+    this.eventName,
+    this.eventDescription,
+    this.startDate,
+    this.endDate,
   });
 
   // Add any other properties and methods as needed.

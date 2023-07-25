@@ -1,179 +1,165 @@
-import 'dart:io';
-
-import 'package:blog_app/constant.dart';
-import 'package:blog_app/models/api_response.dart';
-import 'package:blog_app/models/event.dart';
-import 'package:blog_app/services/post_service.dart';
-import 'package:blog_app/services/user_service.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-import '../services/event_service.dart';
-import 'login.dart';
+import '../constant.dart';
+import '../services/user_service.dart';
 
 class AddEventScreen extends StatefulWidget {
-  final Event? event;
-  final String? title;
-  final DateTime startDate = DateTime.now();
-  final DateTime endDate = DateTime.now();
-
-  AddEventScreen({this.event, this.title});
-
   @override
-  _PostFormState createState() => _PostFormState();
+  _AddEventScreenState createState() => _AddEventScreenState();
 }
 
-class _PostFormState extends State<AddEventScreen> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _txtControllerBody = TextEditingController();
-  final TextEditingController _nameControllerBody = TextEditingController();
-  final DateTime _startControllerBody = DateTime.now();
-  final DateTime _endControllerBody = DateTime.now();
-  bool _loading = false;
-  File? _imageFile;
-  final _picker = ImagePicker();
+class _AddEventScreenState extends State<AddEventScreen> {
+  final _formKey = GlobalKey<FormState>();
 
-  Future getImage() async {
-    final pickedFile = await _picker.getImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      setState(() {
-        _imageFile = File(pickedFile.path);
-      });
+  String eventName = '';
+  String eventDescription = '';
+  DateTime startDate = DateTime.now();
+  DateTime endDate = DateTime.now();
+
+  void _saveEvent() async {
+    if (_formKey.currentState!.validate()) {
+      Event newEvent = Event(
+        eventName: eventName,
+        eventDescription: eventDescription,
+        startDate: startDate,
+        endDate: endDate,
+      );
+
+      // Convert Event object to JSON
+      String eventJson = jsonEncode(newEvent);
+      var apiResponse;
+      try {
+        String token = await getToken();
+        final response = await http.post(
+          Uri.parse('http://192.168.100.115:9000/api/events'),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token'
+          },
+          body: eventJson,
+        );
+
+        if (response.statusCode == 201) {
+          final errors = jsonDecode(response.body)['errors'];
+
+          apiResponse.error = errors[errors.keys.elementAt(0)][0];
+        } else {
+          // Handle error response. You can show an error message to the user.
+        }
+      } catch (e) {
+        print(e);
+        // Handle any exceptions that occurred during the HTTP request.
+        // You can show an error message or perform any necessary error handling.
+      }
     }
-  }
-
-  void _createPost() async {
-    String? image = _imageFile == null ? null : getStringImage(_imageFile);
-    ApiResponse response = await createEvent(_nameControllerBody.text,
-        _txtControllerBody.text, _startControllerBody, _endControllerBody);
-
-    if (response.error == null) {
-      Navigator.of(context).pop();
-    } else if (response.error == unauthorized) {
-      logout().then((value) => {
-            Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => Login()),
-                (route) => false)
-          });
-    } else {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('${response.error}')));
-      setState(() {
-        _loading = !_loading;
-      });
-    }
-  }
-
-  // edit event
-  void _editPost(int postId) async {
-    ApiResponse response = await editPost(postId, _txtControllerBody.text);
-    if (response.error == null) {
-      Navigator.of(context).pop();
-    } else if (response.error == unauthorized) {
-      logout().then((value) => {
-            Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => Login()),
-                (route) => false)
-          });
-    } else {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('${response.error}')));
-      setState(() {
-        _loading = !_loading;
-      });
-    }
-  }
-
-  @override
-  void initState() {
-    if (widget.event != null) {
-      _txtControllerBody.text = widget.event!.eventDescription ?? '';
-    }
-    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Add New Event',
-          style: TextStyle(
-              color: Color.fromARGB(
-                  218, 228, 135, 4), // Replace with your desired text color
-              fontSize: 20 // Optional, adjust the font size as needed
-              // Optional, adjust the font weight as needed
-              ),
-        ),
-        backgroundColor: Colors.black,
-      ),
-      body: _loading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : ListView(
+      // appBar: AppBar(
+      //   title: Text('Add Event'),
+      // ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                widget.event != null
-                    ? SizedBox()
-                    : Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 200,
-                        decoration: BoxDecoration(
-                            image: _imageFile == null
-                                ? null
-                                : DecorationImage(
-                                    image: FileImage(_imageFile ?? File('')),
-                                    fit: BoxFit.cover)),
-                        child: Center(
-                          child: IconButton(
-                            icon: Icon(Icons.image,
-                                size: 50, color: Colors.black38),
-                            onPressed: () {
-                              getImage();
-                            },
-                          ),
-                        ),
-                      ),
-                Form(
-                  key: _formKey,
-                  child: Padding(
-                    padding: EdgeInsets.all(8),
-                    child: TextFormField(
-                      controller: _txtControllerBody,
-                      // keyboardType: TextInputType.multiline,
-                      // maxLines: 9,
-                      decoration: InputDecoration(labelText: 'Event Name'),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter the event name.';
-                        }
-                        return null;
-                      },
-                      onChanged: (value) {
-                        setState(() {
-                          // eventName = value;
-                        });
-                      },
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8),
-                  child: kTextButton('Post', () {
-                    if (_formKey.currentState!.validate()) {
-                      setState(() {
-                        _loading = !_loading;
-                      });
-                      if (widget.event == null) {
-                        _createPost();
-                      } else {
-                        _editPost(widget.event!.id ?? 0);
-                      }
+                TextFormField(
+                  decoration: InputDecoration(labelText: 'Event Name'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter the event name.';
                     }
-                  }),
-                )
+                    return null;
+                  },
+                  onChanged: (value) {
+                    setState(() {
+                      eventName = value;
+                    });
+                  },
+                ),
+                SizedBox(height: 16.0),
+                TextFormField(
+                  maxLines: 3,
+                  decoration: InputDecoration(labelText: 'Event Description'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter the event description.';
+                    }
+                    return null;
+                  },
+                  onChanged: (value) {
+                    setState(() {
+                      eventDescription = value;
+                    });
+                  },
+                ),
+                SizedBox(height: 16.0),
+                DateTimePicker(
+                  labelText: 'Start Date and Time',
+                  selectedDate: startDate,
+                  selectedTime: TimeOfDay.fromDateTime(startDate),
+                  onSelectedDate: (DateTime date) {
+                    setState(() {
+                      startDate = date;
+                    });
+                  },
+                  onSelectedTime: (TimeOfDay time) {
+                    setState(() {
+                      startDate = DateTime(
+                        startDate.year,
+                        startDate.month,
+                        startDate.day,
+                        time.hour,
+                        time.minute,
+                      );
+                    });
+                  },
+                ),
+                SizedBox(height: 16.0),
+                DateTimePicker(
+                  labelText: 'End Date and Time',
+                  selectedDate: endDate,
+                  selectedTime: TimeOfDay.fromDateTime(endDate),
+                  onSelectedDate: (DateTime date) {
+                    setState(() {
+                      endDate = date;
+                    });
+                  },
+                  onSelectedTime: (TimeOfDay time) {
+                    setState(() {
+                      endDate = DateTime(
+                        endDate.year,
+                        endDate.month,
+                        endDate.day,
+                        time.hour,
+                        time.minute,
+                      );
+                    });
+                  },
+                ),
+                SizedBox(height: 16.0),
+                ElevatedButton(
+                  onPressed: _saveEvent,
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors
+                        .orange, // Change the button background color to orange
+                    onPrimary:
+                        Colors.black, // Change the button text color to black
+                  ),
+                  child: Text('Save Event'),
+                ),
               ],
             ),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -242,5 +228,29 @@ class DateTimePicker extends StatelessWidget {
         ),
       ],
     );
+  }
+}
+
+class Event {
+  String? eventName;
+  String? eventDescription;
+  DateTime? startDate;
+  DateTime? endDate;
+
+  Event({
+    this.eventName,
+    this.eventDescription,
+    this.startDate,
+    this.endDate,
+  });
+
+  // Convert Event object to JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'event_name': eventName,
+      'event_description': eventDescription,
+      'start_date': startDate?.toIso8601String(),
+      'end_date': endDate?.toIso8601String(),
+    };
   }
 }

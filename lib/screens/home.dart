@@ -7,7 +7,8 @@ import 'package:blog_app/services/user_service.dart';
 import 'package:flutter/material.dart';
 
 import 'add_event_screen.dart';
-import 'add_event_screen3.dart';
+// import 'add_event_screen3.dart';
+import 'events_screen.dart';
 import 'login.dart';
 // import 'post_form.dart';
 // import 'search_screen.dart';
@@ -79,7 +80,7 @@ class _HomeState extends State<Home> {
           children: [
             Center(child: PostScreen()),
             Center(child: AddEventScreen()),
-            Center(child: ProductScreen()),
+            Center(child: EventsScreen()),
             Center(child: VenuesScreen()),
             Center(child: Profile()),
           ],

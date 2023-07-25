@@ -1,54 +1,60 @@
 import 'dart:convert';
+
+import 'package:blog_app/screens/add_event_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-class Product {
-  final String name;
-  final String description;
-  final String imageUrl;
-  final double price;
+class Event {
+  final int id;
+  final String eventName;
+  final String eventDescription;
+  final DateTime startDate;
+  final DateTime endDate;
 
-  Product({
-    required this.name,
-    required this.description,
-    required this.imageUrl,
-    required this.price,
+  Event({
+    required this.id,
+    required this.eventName,
+    required this.eventDescription,
+    required this.startDate,
+    required this.endDate,
   });
+
+  factory Event.fromJson(Map<String, dynamic> json) {
+    return Event(
+      id: json['id'],
+      eventName: json['event_name'],
+      eventDescription: json['event_description'],
+      startDate: DateTime.parse(json['start_date']),
+      endDate: DateTime.parse(json['end_date']),
+    );
+  }
 }
 
 class EventsScreen extends StatefulWidget {
   @override
-  _ProductsScreenState createState() => _ProductsScreenState();
+  _EventsScreenState createState() => _EventsScreenState();
 }
 
-class _ProductsScreenState extends State<EventsScreen> {
-  List<Product> products = [];
-
+class _EventsScreenState extends State<EventsScreen> {
+  List<Event> events = [];
   @override
   void initState() {
     super.initState();
-    fetchProducts();
+    fetchEvents();
   }
 
-  Future<void> fetchProducts() async {
-    final response =
-        await http.get(Uri.parse('http://192.168.162.249:8000/api/products'));
+  Future<void> fetchEvents() async {
+    final response = await http.get(
+      Uri.parse('http://your-laravel-api-url/api/events'),
+    );
+
     if (response.statusCode == 200) {
-      final jsonData = json.decode(response.body);
-
+      final List<dynamic> jsonData = jsonDecode(response.body);
       setState(() {
-        products = List.from(jsonData.map((data) => Product(
-              name: data['name'],
-              description: data['description'],
-              imageUrl: data['image_url'],
-              price: data['price'].toDouble(),
-            )));
-
-        print(products);
+        events = jsonData.map((data) => Event.fromJson(data)).toList();
       });
     } else {
-      // Handle API error here
-      print('Error fetching products: ${response.statusCode}');
+      // Handle error response.
     }
   }
 
@@ -56,80 +62,26 @@ class _ProductsScreenState extends State<EventsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       // appBar: AppBar(
-      //   title: Text('Products Screen'),
+      //   title: Text('Events'),
       // ),
       body: ListView.builder(
-        itemCount: products.length,
+        itemCount: events.length,
         itemBuilder: (context, index) {
-          final product = products[index];
-          return Card(
-            child: ListTile(
-              leading: Image.network(product.imageUrl),
-              title: Text(product.name),
-              subtitle: Text('Price: \$${product.price.toStringAsFixed(2)}'),
-              trailing: IconButton(
-                icon: Icon(Icons.visibility),
-                onPressed: () {
-                  // Navigate to the product details screen
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          ProductDetailsScreen(product: product),
-                    ),
-                  );
-                },
-              ),
-              onTap: () {
-                // Navigate to the product details screen (same as tapping the trailing icon)
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        ProductDetailsScreen(product: product),
-                  ),
-                );
-              },
-            ),
+          Event event = events[index];
+          return ListTile(
+            title: Text(event.eventName),
+            subtitle: Text(event.eventDescription),
+            trailing: Icon(Icons.event),
           );
         },
       ),
-    );
-  }
-}
-
-class ProductDetailsScreen extends StatelessWidget {
-  final Product product;
-
-  ProductDetailsScreen({required this.product});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Product Details'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Image.network(
-              product.imageUrl,
-              height: 200,
-              fit: BoxFit.cover,
-            ),
-            SizedBox(height: 16),
-            Text(
-              product.name,
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 8),
-            Text('Price: \$${product.price.toStringAsFixed(2)}'),
-            SizedBox(height: 16),
-            Text(product.description),
-          ],
-        ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => AddEventScreen()),
+              (route) => false);
+        },
+        child: Icon(Icons.add),
       ),
     );
   }

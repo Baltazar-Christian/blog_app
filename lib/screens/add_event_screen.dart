@@ -1,3 +1,4 @@
+import 'package:blog_app/screens/events_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -33,7 +34,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
       try {
         String token = await getToken();
         final response = await http.post(
-          Uri.parse('http://192.168.100.115:9000/api/events'),
+          Uri.parse('http://192.168.7.249:9000/api/events'),
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer $token'
@@ -42,9 +43,9 @@ class _AddEventScreenState extends State<AddEventScreen> {
         );
 
         if (response.statusCode == 201) {
-          final errors = jsonDecode(response.body)['errors'];
-
-          apiResponse.error = errors[errors.keys.elementAt(0)][0];
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => EventsScreen()),
+              (route) => false);
         } else {
           // Handle error response. You can show an error message to the user.
         }
@@ -59,9 +60,9 @@ class _AddEventScreenState extends State<AddEventScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('Add Event'),
-      // ),
+      appBar: AppBar(
+        title: Text('Add Event'),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(

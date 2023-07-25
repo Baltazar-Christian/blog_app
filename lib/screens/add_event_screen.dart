@@ -2,27 +2,33 @@ import 'dart:io';
 
 import 'package:blog_app/constant.dart';
 import 'package:blog_app/models/api_response.dart';
-import 'package:blog_app/models/post.dart';
+import 'package:blog_app/models/event.dart';
 import 'package:blog_app/services/post_service.dart';
 import 'package:blog_app/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../services/event_service.dart';
 import 'login.dart';
 
-class PostForm extends StatefulWidget {
-  final Post? post;
+class AddEventScreen extends StatefulWidget {
+  final Event? event;
   final String? title;
+  final DateTime startDate = DateTime.now();
+  final DateTime endDate = DateTime.now();
 
-  PostForm({this.post, this.title});
+  AddEventScreen({this.event, this.title});
 
   @override
   _PostFormState createState() => _PostFormState();
 }
 
-class _PostFormState extends State<PostForm> {
+class _PostFormState extends State<AddEventScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _txtControllerBody = TextEditingController();
+  final TextEditingController _nameControllerBody = TextEditingController();
+  final DateTime _startControllerBody = DateTime.now();
+  final DateTime _endControllerBody = DateTime.now();
   bool _loading = false;
   File? _imageFile;
   final _picker = ImagePicker();
@@ -38,7 +44,8 @@ class _PostFormState extends State<PostForm> {
 
   void _createPost() async {
     String? image = _imageFile == null ? null : getStringImage(_imageFile);
-    ApiResponse response = await createPost(_txtControllerBody.text, image);
+    ApiResponse response = await createEvent(_nameControllerBody.text,
+        _txtControllerBody.text, _startControllerBody, _endControllerBody);
 
     if (response.error == null) {
       Navigator.of(context).pop();
@@ -57,7 +64,7 @@ class _PostFormState extends State<PostForm> {
     }
   }
 
-  // edit post
+  // edit event
   void _editPost(int postId) async {
     ApiResponse response = await editPost(postId, _txtControllerBody.text);
     if (response.error == null) {
@@ -79,8 +86,8 @@ class _PostFormState extends State<PostForm> {
 
   @override
   void initState() {
-    if (widget.post != null) {
-      _txtControllerBody.text = widget.post!.body ?? '';
+    if (widget.event != null) {
+      _txtControllerBody.text = widget.event!.eventDescription ?? '';
     }
     super.initState();
   }
@@ -90,7 +97,7 @@ class _PostFormState extends State<PostForm> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Add New Post',
+          'Add New Event',
           style: TextStyle(
               color: Color.fromARGB(
                   218, 228, 135, 4), // Replace with your desired text color
@@ -106,7 +113,7 @@ class _PostFormState extends State<PostForm> {
             )
           : ListView(
               children: [
-                widget.post != null
+                widget.event != null
                     ? SizedBox()
                     : Container(
                         width: MediaQuery.of(context).size.width,
@@ -133,15 +140,20 @@ class _PostFormState extends State<PostForm> {
                     padding: EdgeInsets.all(8),
                     child: TextFormField(
                       controller: _txtControllerBody,
-                      keyboardType: TextInputType.multiline,
-                      maxLines: 9,
-                      validator: (val) =>
-                          val!.isEmpty ? 'Post body is required' : null,
-                      decoration: InputDecoration(
-                          hintText: "Post body...",
-                          border: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(width: 1, color: Colors.black38))),
+                      // keyboardType: TextInputType.multiline,
+                      // maxLines: 9,
+                      decoration: InputDecoration(labelText: 'Event Name'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter the event name.';
+                        }
+                        return null;
+                      },
+                      onChanged: (value) {
+                        setState(() {
+                          // eventName = value;
+                        });
+                      },
                     ),
                   ),
                 ),
@@ -152,16 +164,83 @@ class _PostFormState extends State<PostForm> {
                       setState(() {
                         _loading = !_loading;
                       });
-                      if (widget.post == null) {
+                      if (widget.event == null) {
                         _createPost();
                       } else {
-                        _editPost(widget.post!.id ?? 0);
+                        _editPost(widget.event!.id ?? 0);
                       }
                     }
                   }),
                 )
               ],
             ),
+    );
+  }
+}
+
+class DateTimePicker extends StatelessWidget {
+  final String labelText;
+  final DateTime selectedDate;
+  final TimeOfDay selectedTime;
+  final Function(DateTime) onSelectedDate;
+  final Function(TimeOfDay) onSelectedTime;
+
+  DateTimePicker({
+    required this.labelText,
+    required this.selectedDate,
+    required this.selectedTime,
+    required this.onSelectedDate,
+    required this.onSelectedTime,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          labelText,
+          style: TextStyle(
+              fontSize: 16.0,
+              fontWeight: FontWeight.bold,
+              color: Colors.black), // Change the label color to black
+        ),
+        SizedBox(height: 8.0),
+        Row(
+          children: [
+            Expanded(
+              child: TextButton(
+                onPressed: () async {
+                  final DateTime? pickedDate = await showDatePicker(
+                    context: context,
+                    initialDate: selectedDate,
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(2101),
+                  );
+                  if (pickedDate != null) {
+                    onSelectedDate(pickedDate);
+                  }
+                },
+                child: Text('${selectedDate.toLocal()}'.split(' ')[0]),
+              ),
+            ),
+            Expanded(
+              child: TextButton(
+                onPressed: () async {
+                  final TimeOfDay? pickedTime = await showTimePicker(
+                    context: context,
+                    initialTime: selectedTime,
+                  );
+                  if (pickedTime != null) {
+                    onSelectedTime(pickedTime);
+                  }
+                },
+                child: Text(selectedTime.format(context)),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

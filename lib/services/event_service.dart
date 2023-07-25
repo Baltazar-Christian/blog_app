@@ -74,6 +74,7 @@ Future<ApiResponse> createEvent(String eventName, String eventDescription,
         break;
     }
   } catch (e) {
+    print(e);
     apiResponse.error = serverError;
   }
   return apiResponse;

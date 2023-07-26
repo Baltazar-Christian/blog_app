@@ -5,6 +5,7 @@ import 'package:blog_app/screens/single_event.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import '../constant.dart';
 import '../services/user_service.dart';
 
 class Event {
@@ -49,7 +50,7 @@ class _EventsScreenState extends State<EventsScreen> {
   Future<void> fetchEvents() async {
     String token = await getToken();
     final response = await http.get(
-      Uri.parse('http://192.168.7.249:9000/api/events'),
+      Uri.parse(eventsURL),
       // headers: {
       //   'Content-Type': 'application/json',
       //   'Authorization': 'Bearer $token'

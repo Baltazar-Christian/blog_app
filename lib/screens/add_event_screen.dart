@@ -35,7 +35,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
       try {
         String token = await getToken();
         final response = await http.post(
-          Uri.parse('http://192.168.7.249:9000/api/events'),
+          Uri.parse(eventsURL),
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer $token'

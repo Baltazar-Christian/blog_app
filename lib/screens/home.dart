@@ -1,3 +1,4 @@
+import 'package:blog_app/screens/friends_screen.dart';
 import 'package:blog_app/screens/post_screen.dart';
 import 'package:blog_app/screens/product_screen.dart';
 // import 'package:blog_app/screens/product_screen%20copy.dart';
@@ -72,7 +73,7 @@ class _HomeState extends State<Home> {
             Center(child: HomeScreen()),
             Center(child: PostScreen()),
             Center(child: EventsScreen()),
-            Center(child: VenuesScreen()),
+            Center(child: FriendListScreen()),
             Center(child: Profile()),
           ],
           onPageChanged: (index) {

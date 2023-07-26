@@ -48,7 +48,7 @@ class _LoginState extends State<Login> {
       //   centerTitle: true,
       // ),
       // backgroundColor: Color.fromARGB(218, 90, 87, 83),
-      backgroundColor: Color.fromARGB(255, 26, 25, 25),
+      backgroundColor: Colors.black,
       body: Form(
         key: formkey,
         child: ListView(
@@ -69,8 +69,8 @@ class _LoginState extends State<Login> {
             TextFormField(
               controller: txtEmail,
               keyboardType: TextInputType.emailAddress,
-              style: TextStyle(color: Color.fromARGB(218, 228, 135, 4)),
-              // Default text color
+              style: TextStyle(color: Colors.black),
+              obscureText: true, // Default text color
               cursorColor: Color.fromARGB(218, 228, 135, 4), //
               validator: (val) => val!.isEmpty ? 'Invalid email address' : null,
               decoration: InputDecoration(
@@ -85,11 +85,6 @@ class _LoginState extends State<Login> {
               ),
             ),
             SizedBox(height: 8),
-            Text(
-              'Password',
-              style: TextStyle(
-                  color: Color.fromARGB(218, 228, 135, 4), fontSize: 16),
-            ),
             TextFormField(
               controller: txtPassword,
               obscureText: true,

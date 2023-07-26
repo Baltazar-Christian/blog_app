@@ -114,8 +114,8 @@ class _LoginState extends State<Login> {
             loading
                 ? Center(
                     child: CircularProgressIndicator(
-                      color: Color.fromARGB(218, 228, 135, 4),
-                      backgroundColor: Colors.black,
+                      color: Colors.black,
+                      backgroundColor: Color.fromARGB(218, 228, 135, 4),
                     ),
                   )
                 : kTextButton('Login', () {

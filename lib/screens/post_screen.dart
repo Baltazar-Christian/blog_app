@@ -6,7 +6,7 @@ import 'package:blog_app/services/post_service.dart';
 import 'package:blog_app/services/user_service.dart';
 import 'package:flutter/material.dart';
 
-import 'login.dart';
+import 'login1.dart';
 import 'post_form.dart';
 
 class PostScreen extends StatefulWidget {

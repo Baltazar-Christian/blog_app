@@ -41,11 +41,11 @@ TextButton kTextButton(String label, Function onPressed) {
   return TextButton(
     child: Text(
       label,
-      style: const TextStyle(color: Color.fromARGB(218, 228, 135, 4)),
+      style: const TextStyle(color: Colors.black),
     ),
     style: ButtonStyle(
-        backgroundColor:
-            MaterialStateColor.resolveWith((states) => Colors.black),
+        backgroundColor: MaterialStateColor.resolveWith(
+            (states) => Color.fromARGB(218, 228, 135, 4)),
         padding: MaterialStateProperty.resolveWith(
             (states) => const EdgeInsets.symmetric(vertical: 15))),
     onPressed: () => onPressed(),
@@ -57,7 +57,10 @@ Row kLoginRegisterHint(String text, String label, Function onTap) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
-      Text(text),
+      Text(
+        text,
+        style: const TextStyle(color: Color.fromARGB(218, 228, 135, 4)),
+      ),
       GestureDetector(
           child: Text(label,
               style: const TextStyle(color: Color.fromARGB(218, 228, 135, 4))),

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constant.dart';
-import 'login.dart';
+import 'login1.dart';
 
 class Register extends StatefulWidget {
   @override

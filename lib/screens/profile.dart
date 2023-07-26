@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../constant.dart';
-import 'login.dart';
+import 'login1.dart';
 
 class Profile extends StatefulWidget {
   @override

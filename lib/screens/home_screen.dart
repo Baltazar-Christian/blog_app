@@ -38,69 +38,33 @@ class HomeScreen extends StatelessWidget {
             // If data is successfully loaded, display the home screen content
             final events = snapshot.data!;
             return Scaffold(
-              appBar: AppBar(
-                leading: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Image.asset(
-                    'assets/logo.png', // Replace this with the actual path of your logo image
-                    fit: BoxFit
-                        .contain, // Adjust the logo's size to fit within the AppBar
-                  ),
-                ),
-                backgroundColor: Colors.black,
-                actions: [
-                  IconButton(
-                    onPressed: () {
-                      logout().then((value) => {
-                            Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(
-                                    builder: (context) => Login()),
-                                (route) => false)
-                          });
-                    },
-                    icon: Icon(
-                      Icons.exit_to_app,
-                      color: Color.fromARGB(218, 228, 135, 4),
-                    ),
-                  )
-                ],
-              ),
               body: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     // Header Section
                     Container(
-                      padding: EdgeInsets.all(16),
-                      // decoration: BoxDecoration(
-                      //   gradient: LinearGradient(
-                      //     colors: [Colors.blue, Colors.indigo],
-                      //     begin: Alignment.topCenter,
-                      //     end: Alignment.bottomCenter,
-                      //   ),
-                      // ),
-                      child: Center(
-                        child: Text(
-                          '',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            backgroundColor: Colors.black,
-                          ),
-                        ),
-                      ),
+                      padding: EdgeInsets.all(1),
                     ),
 
                     // Upcoming Events Section
                     Padding(
                       padding: EdgeInsets.all(16),
-                      child: Text(
-                        'Upcoming Events',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      child: Row(
+                        // Use Row to display Icon and Text together
+                        children: [
+                          Icon(Icons.calendar_today,
+                              color: Colors.orange), // Add Icon before the Text
+                          SizedBox(
+                              width: 8), // Add some space between Icon and Text
+                          Text(
+                            'Upcoming Events',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     SizedBox(
@@ -121,14 +85,22 @@ class HomeScreen extends StatelessWidget {
                     // Featured Event Section
                     Padding(
                       padding: EdgeInsets.all(16),
-                      child: Text(
-                        'Featured Event',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                      child: Row(// Use Row to display Icon and Text together
+                          children: [
+                        Icon(Icons.star,
+                            color: Colors.orange), // Add Icon before the Text
+                        SizedBox(
+                            width: 8), // Add some space between Icon and Text
+                        Text(
+                          'Featured Event',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
+                      ]),
                     ),
+
                     FeaturedEventCard(
                       eventName: 'Featured Event Name',
                       eventDate: 'Featured Event Date',
@@ -155,46 +127,6 @@ class HomeScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-
-                    // Categories or Filters Section
-                    Padding(
-                      padding: EdgeInsets.all(16),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          FilterButton(label: 'Category 1'),
-                          FilterButton(label: 'Category 2'),
-                        ],
-                      ),
-                    ),
-
-                    // Event Recommendations Section
-                    Padding(
-                      padding: EdgeInsets.all(16),
-                      child: Text(
-                        'Event Recommendations',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 200,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 3,
-                        itemBuilder: (context, index) {
-                          return EventCard(
-                            eventName: 'Recommendation $index',
-                            eventDate: 'Recommendation Date $index',
-                            eventLocation: 'Recommendation Location $index',
-                          );
-                        },
-                      ),
-                    ),
-
-                    // Footer or Bottom Navigation Section
                   ],
                 ),
               ),
@@ -223,9 +155,9 @@ class EventCard extends StatelessWidget {
       ),
       elevation: 3,
       child: Container(
-        width: 200,
+        width: 170,
         decoration: BoxDecoration(
-          color: Color.fromARGB(218, 249, 221, 182),
+          color: Color.fromARGB(218, 213, 189, 155),
           borderRadius: BorderRadius.circular(10),
         ),
         padding: EdgeInsets.all(10),
@@ -236,19 +168,19 @@ class EventCard extends StatelessWidget {
             Text(
               eventName,
               style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black),
             ),
             SizedBox(height: 4),
             Text(
               eventDate,
-              style: TextStyle(fontSize: 14),
+              style: TextStyle(fontSize: 14, color: Colors.black38),
             ),
             SizedBox(height: 4),
             Text(
               eventLocation,
-              style: TextStyle(fontSize: 14),
+              style: TextStyle(fontSize: 14, color: Colors.black38),
             ),
           ],
         ),
@@ -276,9 +208,10 @@ class FeaturedEventCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
+      color: Color.fromARGB(218, 249, 221, 182),
       elevation: 3,
       child: Container(
-        width: 300,
+        width: 200,
         padding: EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -288,19 +221,19 @@ class FeaturedEventCard extends StatelessWidget {
             Text(
               eventName,
               style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
+                  fontSize: 19,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black),
             ),
             SizedBox(height: 8),
             Text(
               eventDate,
-              style: TextStyle(fontSize: 18),
+              style: TextStyle(fontSize: 14, color: Colors.black38),
             ),
             SizedBox(height: 8),
             Text(
               eventLocation,
-              style: TextStyle(fontSize: 18),
+              style: TextStyle(fontSize: 14, color: Colors.black38),
             ),
             SizedBox(height: 16),
             ElevatedButton(
@@ -375,9 +308,9 @@ class _QuickActionButtonState extends State<QuickActionButton>
         style: ElevatedButton.styleFrom(
           padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
 
-          primary: Colors.black, // Change the button background color to orange
-          onPrimary: Color.fromARGB(
-              218, 228, 135, 4), // Change the button text color to black
+          primary: Color.fromARGB(
+              218, 228, 135, 4), // Change the button background color to orange
+          onPrimary: Colors.black, // Change the button text color to black
         ),
         // onHighlightChanged: (isHighlighted) {
         //   if (!isHighlighted) {

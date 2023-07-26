@@ -1,7 +1,7 @@
 // ----- STRINGS ------
 import 'package:flutter/material.dart';
 
-const baseURL = 'http://192.168.100.115:9000/api';
+const baseURL = 'http://192.168.7.249:9000/api';
 const loginURL = '$baseURL/login';
 const registerURL = '$baseURL/register';
 const logoutURL = '$baseURL/logout';
@@ -20,18 +20,22 @@ const somethingWentWrong = 'Something went wrong, try again!';
 // --- input decoration
 InputDecoration kInputDecoration(String label) {
   return InputDecoration(
-    labelText: label,
+    // labelText: label,
+    filled: true,
+    fillColor: Color.fromARGB(218, 228, 135, 4).withOpacity(0.2),
     contentPadding: const EdgeInsets.all(10),
     border: const OutlineInputBorder(
-        borderSide: BorderSide(width: 1, color: Colors.black)),
+        borderSide:
+            BorderSide(width: 1, color: Color.fromARGB(218, 228, 135, 4))),
     focusedBorder: const OutlineInputBorder(
       borderSide: BorderSide(
           color: Color.fromARGB(
               218, 228, 135, 4)), // Border color when the field is in focus
     ),
-    enabledBorder: const OutlineInputBorder(
-      borderSide: BorderSide(color: Colors.grey), // Default border color
-    ),
+    // enabledBorder: const OutlineInputBorder(
+    //   borderSide: BorderSide(
+    //       color: Color.fromARGB(255, 237, 102, 29)), // Default border color
+    // ),
   );
 }
 

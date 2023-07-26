@@ -93,7 +93,9 @@ class _LoginState extends State<Login> {
             TextFormField(
               controller: txtPassword,
               obscureText: true,
-              style: TextStyle(color: Colors.black), // Default text color
+              style: TextStyle(
+                  color:
+                      Color.fromARGB(218, 228, 135, 4)), // Default text color
               cursorColor: Color.fromARGB(218, 228, 135, 4), //
               validator: (val) =>
                   val!.length < 6 ? 'Required at least 6 chars' : null,

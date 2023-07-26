@@ -1,20 +1,34 @@
+import 'package:blog_app/screens/events_screen.dart';
 import 'package:blog_app/screens/friends_screen.dart';
-import 'package:blog_app/screens/post_form.dart';
+import 'package:blog_app/screens/home_screen.dart';
 import 'package:blog_app/screens/post_screen.dart';
-import 'package:blog_app/screens/product_screen.dart';
-// import 'package:blog_app/screens/product_screen%20copy.dart';
 import 'package:blog_app/screens/profile.dart';
-import 'package:blog_app/screens/venues_screen.dart';
-import 'package:blog_app/services/user_service.dart';
 import 'package:flutter/material.dart';
 
-import 'add_event_screen.dart';
-// import 'add_event_screen3.dart';
-import 'events_screen.dart';
-import 'home_screen.dart';
-import 'login1.dart';
-// import 'post_form.dart';
-// import 'search_screen.dart';
+import '../services/user_service.dart';
+import 'login.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData(
+        scaffoldBackgroundColor:
+            Colors.black, // Set the background color to black
+        textTheme: const TextTheme(
+          bodyText1:
+              TextStyle(color: Colors.orange), // Set the text color to orange
+          // Add more text styles as needed
+        ),
+      ),
+      home: Home(),
+    );
+  }
+}
 
 class Home extends StatefulWidget {
   @override
@@ -22,110 +36,136 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int currentIndex = 0;
-  int _selectedIndex = 0;
-  PageController _pageController = PageController();
+  int _currentIndex = 0;
+  final PageController _pageController = PageController();
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-      _pageController.animateToPage(
-        index,
-        duration: Duration(milliseconds: 200),
-        curve: Curves.easeInOut,
-      );
-    });
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: PageView(
-          controller: _pageController,
-          children: [
-            Center(child: HomeScreen()),
-            Center(child: PostScreen()),
-            Center(child: EventsScreen()),
-            Center(child: FriendListScreen()),
-            Center(child: Profile()),
-          ],
-          onPageChanged: (index) {
-            setState(() {
-              _selectedIndex = index;
-            });
-          },
+      appBar: AppBar(
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Image.asset(
+            'assets/logo.png', // Replace this with the actual path of your logo image
+            fit: BoxFit
+                .contain, // Adjust the logo's size to fit within the AppBar
+          ),
         ),
-        floatingActionButton: FloatingActionButton(
+        backgroundColor: Color.fromARGB(255, 26, 25, 25),
+        actions: [
+          IconButton(
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => PostForm(
-                        title: 'Add new post',
-                      )));
+              logout().then((value) => {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(builder: (context) => Login()),
+                        (route) => false)
+                  });
             },
-            child: Icon(
-              Icons.calendar_month,
+            icon: Icon(
+              Icons.exit_to_app,
               color: Color.fromARGB(218, 228, 135, 4),
             ),
-            backgroundColor: Colors.black),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        bottomNavigationBar: BottomAppBar(
-          color: Colors.black,
-          notchMargin: 5,
-          elevation: 10,
-          shadowColor: Colors.black,
-          clipBehavior: Clip.antiAlias,
-          shape: CircularNotchedRectangle(),
-          child: BottomNavigationBar(
-            items: [
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.calendar_month), label: ''),
-              // BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-              BottomNavigationBarItem(icon: Icon(Icons.person), label: '')
-            ],
-            currentIndex: currentIndex,
-            selectedItemColor: Color.fromARGB(218, 228, 135, 4),
-            onTap: (val) {
-              setState(() {
-                currentIndex = val;
-              });
-            },
-          ),
-          // BottomNavigationBar(
-          //   /// Set the BottomNavigat
-          //   /// ionBar background color to black
-          //   selectedItemColor:
-          //       Colors.orange, // Set the selected item color to orange
-          //   unselectedItemColor: Colors.grey,
-          //   items: [
-          //     BottomNavigationBarItem(
-          //       icon: Icon(Icons.home, color: Colors.black38),
-          //       label: 'Home',
-          //     ),
-          //     BottomNavigationBarItem(
-          //       icon: Icon(
-          //         Icons.airplay,
-          //         color: Colors.black38,
-          //       ),
-          //       label: 'Explore',
-          //     ),
-          //     BottomNavigationBarItem(
-          //       icon: Icon(Icons.assignment, color: Colors.black38),
-          //       label: 'Events',
-          //     ),
-          //     BottomNavigationBarItem(
-          //       icon: Icon(Icons.group, color: Colors.black38),
-          //       label: 'Friends',
-          //     ),
-          //     BottomNavigationBarItem(
-          //       icon: Icon(Icons.person, color: Colors.black38),
-          //       label: 'Profile',
-          //     ),
-          //   ],
-          //   currentIndex: _selectedIndex,
-          //   // selectedItemColor: Color.fromARGB(218, 228, 135, 4),
-          //   onTap: _onItemTapped,
-          //   // backgroundColor: Colors.black,
-          // ),
-        ));
+          )
+        ],
+      ),
+      body: PageView(
+        controller: _pageController,
+        children: [
+          HomeScreen(), // Replace with your screen widgets
+          PostScreen(),
+          EventsScreen(),
+          FriendListScreen(),
+          Profile()
+        ],
+        onPageChanged: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+      ),
+      bottomNavigationBar: Theme(
+        data: Theme.of(context).copyWith(
+          canvasColor: const Color.fromARGB(255, 29, 28,
+              28), // Set the BottomNavigationBar background color to black
+          primaryColor: Colors.orange, // Set the selected item color to orange
+          textTheme: Theme.of(context).textTheme.copyWith(
+                caption: const TextStyle(
+                    color:
+                        Colors.grey), // Set the unselected item color to grey
+              ),
+        ),
+        child: BottomNavigationBar(
+          //  iconBar background color to black
+          selectedItemColor:
+              Colors.orange, // Set the selected item color to orange
+          unselectedItemColor: Colors.grey,
+          currentIndex: _currentIndex,
+          onTap: (index) {
+            _pageController.animateToPage(
+              index,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+            );
+          },
+          // ignore: prefer_const_literals_to_create_immutables
+          items: [
+            const BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            const BottomNavigationBarItem(
+              icon: Icon(
+                Icons.airplay,
+              ),
+              label: 'Explore',
+            ),
+            const BottomNavigationBarItem(
+              icon: Icon(Icons.assignment),
+              label: 'Events',
+            ),
+            const BottomNavigationBarItem(
+              icon: Icon(Icons.group),
+              label: 'Friends',
+            ),
+            const BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Profile',
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Screen3 extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.red,
+      child: const Center(
+        child: Text('Screen 3',
+            style: TextStyle(color: Colors.white, fontSize: 24)),
+      ),
+    );
+  }
+}
+
+class Screen4 extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.purple,
+      child: const Center(
+        child: Text('Screen 4',
+            style: TextStyle(color: Colors.white, fontSize: 24)),
+      ),
+    );
   }
 }

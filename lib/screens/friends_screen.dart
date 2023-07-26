@@ -74,7 +74,7 @@ class _FriendListScreenState extends State<FriendListScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: Text('Friend List'),
+        // title: Text('Friend List'),
         actions: [
           IconButton(
             icon: Icon(Icons.search),
@@ -103,8 +103,12 @@ class _FriendListScreenState extends State<FriendListScreen> {
         },
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.orange,
         onPressed: () => _showToast('Add Friend'),
-        child: Icon(Icons.person_add),
+        child: Icon(
+          Icons.person_add,
+          color: Colors.black,
+        ),
       ),
     );
   }
@@ -147,10 +151,11 @@ class FriendListItem extends StatelessWidget {
     return Card(
       elevation: 3,
       child: ListTile(
+        tileColor: const Color.fromARGB(255, 26, 25, 25),
         leading: Icon(
           Icons.person,
           size: 50,
-          color: Theme.of(context).primaryColor,
+          color: const Color.fromARGB(255, 123, 97, 57),
         ),
         title: Text(
           name,
@@ -165,11 +170,11 @@ class FriendListItem extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             IconButton(
-              icon: Icon(Icons.info),
+              icon: Icon(Icons.info, color: Colors.orange),
               onPressed: onViewDetail,
             ),
             IconButton(
-              icon: Icon(Icons.message),
+              icon: Icon(Icons.message, color: Colors.orange),
               onPressed: onMessage,
             ),
           ],

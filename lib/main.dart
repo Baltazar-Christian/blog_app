@@ -12,8 +12,8 @@ class App extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        scaffoldBackgroundColor:
-            Colors.black, // Set the background color to black
+        scaffoldBackgroundColor: Color.fromARGB(
+            255, 26, 25, 25), // Set the background color to black
         textTheme: const TextTheme(
           bodyText1:
               TextStyle(color: Colors.orange), // Set the text color to orange

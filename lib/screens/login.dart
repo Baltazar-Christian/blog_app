@@ -93,7 +93,9 @@ class _LoginState extends State<Login> {
             TextFormField(
               controller: txtPassword,
               obscureText: true,
-              style: TextStyle(color: Colors.black), // Default text color
+              style: TextStyle(
+                  color:
+                      Color.fromARGB(218, 228, 135, 4)), // Default text color
               cursorColor: Color.fromARGB(218, 228, 135, 4), //
               validator: (val) =>
                   val!.length < 6 ? 'Required at least 6 chars' : null,
@@ -114,8 +116,8 @@ class _LoginState extends State<Login> {
             loading
                 ? Center(
                     child: CircularProgressIndicator(
-                      color: Color.fromARGB(218, 228, 135, 4),
-                      backgroundColor: Colors.black,
+                      color: Colors.black,
+                      backgroundColor: Color.fromARGB(218, 228, 135, 4),
                     ),
                   )
                 : kTextButton('Login', () {

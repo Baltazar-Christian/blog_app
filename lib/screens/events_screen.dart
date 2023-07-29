@@ -121,15 +121,17 @@ class _EventsScreenState extends State<EventsScreen> {
       //   child: Icon(Icons.add),
       // ),
       floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => AddEventScreen()));
-          },
-          child: Icon(
-            Icons.calendar_month,
-            color: Color.fromARGB(218, 228, 135, 4),
-          ),
-          backgroundColor: Colors.black),
+        onPressed: () {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => AddEventScreen()));
+        },
+        child: Icon(
+          Icons.calendar_month,
+          color: Colors.black,
+        ),
+        backgroundColor: Color.fromARGB(218, 228, 135, 4),
+        hoverColor: Colors.orange,
+      ),
     );
   }
 }

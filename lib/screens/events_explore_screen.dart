@@ -125,15 +125,18 @@ class EventResultScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor:
-            Colors.black, // Set the appbar background color to black
+        backgroundColor: Color.fromARGB(
+            255, 26, 25, 25), // Set the appbar background color to black
         title: Text(
           'Events under $selectedOption',
           style: TextStyle(
-            color: Colors.orange, // Set the text color to orange
+            color: Color.fromARGB(
+                218, 228, 135, 4), // Set the text color to orange
             fontWeight: FontWeight.bold,
           ),
         ),
+        iconTheme: IconThemeData(
+            color: Color.fromARGB(218, 228, 135, 4)), // Set the color here
       ),
       body: ListView.builder(
         itemCount: eventsList.length,

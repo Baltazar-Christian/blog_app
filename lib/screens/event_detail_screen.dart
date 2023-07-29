@@ -15,9 +15,9 @@ class ProductDetailsScreen extends StatelessWidget {
         title: Text(
           'Event Detail',
           style: TextStyle(
-              color: Color.fromARGB(
-                  218, 228, 135, 4), // Replace with your desired text color
-              fontSize: 20),
+            color: Colors.orange, // Set the text color to orange
+            fontWeight: FontWeight.bold,
+          ),
         ),
         iconTheme: IconThemeData(
             color: Color.fromARGB(218, 228, 135, 4)), // Set the color here

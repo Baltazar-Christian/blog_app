@@ -53,7 +53,7 @@ class HomeScreen extends StatelessWidget {
                       child: Row(
                         // Use Row to display Icon and Text together
                         children: [
-                          Icon(Icons.calendar_today,
+                          Icon(Icons.calendar_month_outlined,
                               color: Colors.orange), // Add Icon before the Text
                           SizedBox(
                               width: 8), // Add some space between Icon and Text

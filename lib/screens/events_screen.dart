@@ -84,13 +84,16 @@ class _EventsScreenState extends State<EventsScreen> {
         itemBuilder: (context, index) {
           Event event = events[index];
           return ListTile(
-            leading: Icon(Icons.event),
+            leading: Icon(
+              Icons.event,
+              color: Colors.orange,
+            ),
             title: Text(
               event.eventName,
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             ),
             subtitle: Text(event.eventDescription),
-            trailing: Icon(Icons.arrow_forward_ios),
+            trailing: Icon(Icons.arrow_forward_sharp, color: Colors.orange),
             onTap: () {
               // Navigate to the EventDetailScreen when the event is tapped.
               Navigator.push(

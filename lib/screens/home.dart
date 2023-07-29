@@ -3,9 +3,11 @@ import 'package:blog_app/screens/friends_screen.dart';
 import 'package:blog_app/screens/home_screen.dart';
 import 'package:blog_app/screens/post_screen.dart';
 import 'package:blog_app/screens/profile.dart';
+import 'package:blog_app/screens/user_profile_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../services/user_service.dart';
+import 'events_explore_screen.dart';
 import 'login.dart';
 
 void main() {
@@ -78,10 +80,10 @@ class _HomeState extends State<Home> {
         controller: _pageController,
         children: [
           HomeScreen(), // Replace with your screen widgets
-          PostScreen(),
+          EventsExploreScreen(),
           EventsScreen(),
           FriendListScreen(),
-          Profile()
+          UserProfileScreen()
         ],
         onPageChanged: (index) {
           setState(() {
@@ -121,12 +123,12 @@ class _HomeState extends State<Home> {
             ),
             const BottomNavigationBarItem(
               icon: Icon(
-                Icons.airplay,
+                Icons.search,
               ),
-              label: 'Explore',
+              label: 'Search',
             ),
             const BottomNavigationBarItem(
-              icon: Icon(Icons.assignment),
+              icon: Icon(Icons.calendar_month_outlined),
               label: 'Events',
             ),
             const BottomNavigationBarItem(

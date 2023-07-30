@@ -140,7 +140,7 @@ class HomeScreen extends StatelessWidget {
                       eventLocation: 'Featured Event Location',
                       // Add image property for the featured event image
                       // Replace with your featured event image
-                      // image: AssetImage('assets/featured_event.jpg'),
+                      image: AssetImage('assets/images/music.jpeg'),
                     ),
 
                     // Quick Actions Section
@@ -322,6 +322,7 @@ class FeaturedEventCard extends StatelessWidget {
     required this.eventName,
     required this.eventDate,
     required this.eventLocation,
+    required AssetImage image,
     // Add 'this.image' to the constructor
   });
 

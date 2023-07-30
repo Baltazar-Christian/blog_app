@@ -66,6 +66,7 @@ class _EventsExploreScreenState extends State<EventsExploreScreen> {
                 filled: true,
                 fillColor: Color.fromARGB(218, 228, 135, 4).withOpacity(0.2),
                 hintText: 'Search Events',
+                hintStyle: TextStyle(color: Color.fromARGB(218, 228, 135, 4)),
                 prefixIcon: Icon(
                   Icons.search,
                   color: Color.fromARGB(218, 228, 135, 4),

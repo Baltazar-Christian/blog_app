@@ -80,8 +80,9 @@ class _HomeState extends State<Home> {
         controller: _pageController,
         children: [
           HomeScreen(), // Replace with your screen widgets
-          EventsExploreScreen(),
+
           EventsScreen(),
+          EventsExploreScreen(),
           FriendListScreen(),
           UserProfileScreen()
         ],
@@ -122,14 +123,14 @@ class _HomeState extends State<Home> {
               label: 'Home',
             ),
             const BottomNavigationBarItem(
+              icon: Icon(Icons.calendar_month_outlined),
+              label: 'Events',
+            ),
+            const BottomNavigationBarItem(
               icon: Icon(
                 Icons.search,
               ),
               label: 'Search',
-            ),
-            const BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_month_outlined),
-              label: 'Events',
             ),
             const BottomNavigationBarItem(
               icon: Icon(Icons.group),

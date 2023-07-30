@@ -60,6 +60,7 @@ class _EventsExploreScreenState extends State<EventsExploreScreen> {
           Padding(
             padding: EdgeInsets.all(16),
             child: TextField(
+              cursorColor: Color.fromARGB(218, 228, 135, 4),
               controller: _searchController,
               onChanged: _filterEvents,
               decoration: InputDecoration(
@@ -68,13 +69,13 @@ class _EventsExploreScreenState extends State<EventsExploreScreen> {
                 hintText: 'Search Events',
                 hintStyle: TextStyle(color: Color.fromARGB(218, 228, 135, 4)),
                 prefixIcon: Icon(
-                  Icons.search,
+                  Icons.explore,
                   color: Color.fromARGB(218, 228, 135, 4),
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
-                focusedBorder: const OutlineInputBorder(
+                focusedBorder: const UnderlineInputBorder(
                   borderSide: BorderSide(
                       color: Color.fromARGB(218, 228, 135,
                           4)), // Border color when the field is in focus

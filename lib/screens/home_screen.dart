@@ -205,16 +205,19 @@ class EventCard extends StatelessWidget {
               ),
             ),
             child: Align(
-              alignment: Alignment.topLeft,
+              alignment: Alignment.topRight,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: GestureDetector(
                   onTap: () {
                     // Implement action when the view event detail button is pressed
                     // For now, it will just show a simple popup message
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                          content: Text('View Event Detail Button Pressed!')),
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            EventDetailsScreen(eventId: eventId),
+                      ),
                     );
                   },
                   child: Icon(
@@ -232,7 +235,7 @@ class EventCard extends StatelessWidget {
             right: 0,
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.orange,
+                color: Color.fromARGB(218, 249, 221, 182),
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(10),
                   bottomRight: Radius.circular(10),
@@ -255,12 +258,12 @@ class EventCard extends StatelessWidget {
                   //   eventDate,
                   //   style: TextStyle(fontSize: 14, color: Colors.black38),
                   // ),
-                  SizedBox(height: 4),
-                  Text(
-                    eventLocation,
-                    style: TextStyle(fontSize: 14, color: Colors.black38),
-                  ),
-                  SizedBox(height: 8),
+                  // SizedBox(height: 4),
+                  // Text(
+                  //   eventLocation,
+                  //   style: TextStyle(fontSize: 10, color: Colors.black38),
+                  // ),
+                  // SizedBox(height: 8),
                   // ElevatedButton(
                   //   onPressed: () {
                   //     // Implement navigation to the specific event screen here

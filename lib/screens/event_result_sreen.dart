@@ -20,6 +20,8 @@ class EventResultScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor:
             Colors.black, // Set the appbar background color to black
+        iconTheme: IconThemeData(
+            color: Colors.orange), // Set the back icon color to orange
         title: Text(
           'Events under $selectedOption',
           style: TextStyle(
@@ -39,6 +41,114 @@ class EventResultScreen extends StatelessWidget {
             },
           );
         },
+      ),
+    );
+  }
+}
+
+class ExplorePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Explore'),
+        backgroundColor:
+            Colors.black, // Set the appbar background color to black
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // Explore Options Section
+            Padding(
+              padding: EdgeInsets.all(16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ExploreOptionCard(
+                    optionTitle: 'Category 1',
+                    optionImage:
+                        'assets/category1.jpg', // Replace with the image asset path
+                    onPressed: () {
+                      // Implement navigation to the result screen for Category 1
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              EventResultScreen(selectedOption: 'Category 1'),
+                        ),
+                      );
+                    },
+                  ),
+                  ExploreOptionCard(
+                    optionTitle: 'Category 2',
+                    optionImage:
+                        'assets/logo.png', // Replace with the image asset path
+                    onPressed: () {
+                      // Implement navigation to the result screen for Category 2
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              EventResultScreen(selectedOption: 'Category 2'),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ExploreOptionCard extends StatelessWidget {
+  final String optionTitle;
+  final String optionImage;
+  final VoidCallback onPressed;
+
+  ExploreOptionCard({
+    required this.optionTitle,
+    required this.optionImage,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      elevation: 3,
+      child: Container(
+        width: 150,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          image: DecorationImage(
+            image: AssetImage(optionImage),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(10),
+            onTap: onPressed,
+            child: Center(
+              child: Text(
+                optionTitle,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

@@ -67,18 +67,51 @@ class HomeScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(
+                    // SizedBox(
+                    //   height: 200,
+                    //   child: ListView.builder(
+                    //     scrollDirection: Axis.horizontal,
+                    //     itemCount: 3,
+                    //     itemBuilder: (context, index) {
+                    //       return EventCard(
+                    //         eventName: 'Event $index',
+                    //         eventDate: 'Event Date $index',
+                    //         eventLocation: 'Event Location $index',
+                    //       );
+                    //     },
+                    //   ),
+                    // ),
+                    Container(
                       height: 200,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 3,
-                        itemBuilder: (context, index) {
-                          return EventCard(
-                            eventName: 'Event $index',
-                            eventDate: 'Event Date $index',
-                            eventLocation: 'Event Location $index',
-                          );
-                        },
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage(
+                              'assets/images/muic.jpeg'), // Replace with the image asset path
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage(
+                                'assets/upcoming_events_bg.jpg'), // Replace with the image asset path
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: events.length,
+                          itemBuilder: (context, index) {
+                            return EventCard(
+                              eventName: events[index],
+                              eventDate: 'Event Date $index',
+                              eventLocation: 'Event Location $index',
+                              // Add the background image for each event card
+                              image: AssetImage('assets/images/music.jpeg'),
+                              eventId: 1,
+                            );
+                          },
+                        ),
                       ),
                     ),
 
@@ -140,11 +173,15 @@ class EventCard extends StatelessWidget {
   final String eventName;
   final String eventDate;
   final String eventLocation;
+  final ImageProvider image; // Image property for the background image
+  final int eventId; // Event ID for redirection
 
   EventCard({
     required this.eventName,
     required this.eventDate,
     required this.eventLocation,
+    required this.image, // Initialize the image property
+    required this.eventId, // Initialize the event ID
   });
 
   @override
@@ -154,36 +191,119 @@ class EventCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       elevation: 3,
-      child: Container(
-        width: 170,
-        decoration: BoxDecoration(
-          color: Color.fromARGB(218, 213, 189, 155),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        padding: EdgeInsets.all(10),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              eventName,
-              style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black),
+      child: Stack(
+        children: [
+          // Background Image
+          Container(
+            width: 170,
+            height: 200,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              image: DecorationImage(
+                image: image, // Set the background image for each event card
+                fit: BoxFit.cover,
+              ),
             ),
-            SizedBox(height: 4),
-            Text(
-              eventDate,
-              style: TextStyle(fontSize: 14, color: Colors.black38),
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: GestureDetector(
+                  onTap: () {
+                    // Implement action when the view event detail button is pressed
+                    // For now, it will just show a simple popup message
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                          content: Text('View Event Detail Button Pressed!')),
+                    );
+                  },
+                  child: Icon(
+                    Icons.more_vert,
+                    color: Colors.orange,
+                  ),
+                ),
+              ),
             ),
-            SizedBox(height: 4),
-            Text(
-              eventLocation,
-              style: TextStyle(fontSize: 14, color: Colors.black38),
+          ),
+          // Event Details
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(10),
+                  bottomRight: Radius.circular(10),
+                ),
+              ),
+              padding: EdgeInsets.all(8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    eventName,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    eventDate,
+                    style: TextStyle(fontSize: 14, color: Colors.black38),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    eventLocation,
+                    style: TextStyle(fontSize: 14, color: Colors.black38),
+                  ),
+                  SizedBox(height: 8),
+                  ElevatedButton(
+                    onPressed: () {
+                      // Implement navigation to the specific event screen here
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              EventDetailsScreen(eventId: eventId),
+                        ),
+                      );
+                    },
+                    child: Text('View Event Details'),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.black,
+                      onPrimary: Color.fromARGB(218, 228, 135, 4),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ],
-        ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class EventDetailsScreen extends StatelessWidget {
+  final int eventId;
+
+  EventDetailsScreen({required this.eventId});
+
+  @override
+  Widget build(BuildContext context) {
+    // You can implement the event details screen here
+    // Use the 'eventId' to fetch the specific event details and display them on the screen
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Event Details'),
+        backgroundColor: Colors.black, // Set the app bar background to black
+      ),
+      body: Center(
+        child: Text('Event Details for Event $eventId'),
       ),
     );
   }

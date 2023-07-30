@@ -232,7 +232,7 @@ class EventCard extends StatelessWidget {
             right: 0,
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Colors.orange,
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(10),
                   bottomRight: Radius.circular(10),
@@ -245,39 +245,39 @@ class EventCard extends StatelessWidget {
                   Text(
                     eventName,
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 14,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
                     ),
                   ),
-                  SizedBox(height: 4),
-                  Text(
-                    eventDate,
-                    style: TextStyle(fontSize: 14, color: Colors.black38),
-                  ),
+                  // SizedBox(height: 4),
+                  // Text(
+                  //   eventDate,
+                  //   style: TextStyle(fontSize: 14, color: Colors.black38),
+                  // ),
                   SizedBox(height: 4),
                   Text(
                     eventLocation,
                     style: TextStyle(fontSize: 14, color: Colors.black38),
                   ),
                   SizedBox(height: 8),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Implement navigation to the specific event screen here
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              EventDetailsScreen(eventId: eventId),
-                        ),
-                      );
-                    },
-                    child: Text('View Event Details'),
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.black,
-                      onPrimary: Color.fromARGB(218, 228, 135, 4),
-                    ),
-                  ),
+                  // ElevatedButton(
+                  //   onPressed: () {
+                  //     // Implement navigation to the specific event screen here
+                  //     Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(
+                  //         builder: (context) =>
+                  //             EventDetailsScreen(eventId: eventId),
+                  //       ),
+                  //     );
+                  //   },
+                  //   child: Text('View Event Details'),
+                  //   style: ElevatedButton.styleFrom(
+                  //     primary: Colors.black,
+                  //     onPrimary: Color.fromARGB(218, 228, 135, 4),
+                  //   ),
+                  // ),
                 ],
               ),
             ),

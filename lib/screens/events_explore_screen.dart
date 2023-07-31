@@ -69,7 +69,7 @@ class _EventsExploreScreenState extends State<EventsExploreScreen> {
                 hintText: 'Search Events',
                 hintStyle: TextStyle(color: Color.fromARGB(218, 228, 135, 4)),
                 prefixIcon: Icon(
-                  Icons.explore,
+                  Icons.search,
                   color: Color.fromARGB(218, 228, 135, 4),
                 ),
                 border: OutlineInputBorder(

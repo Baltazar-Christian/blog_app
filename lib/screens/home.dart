@@ -128,7 +128,7 @@ class _HomeState extends State<Home> {
             ),
             const BottomNavigationBarItem(
               icon: Icon(
-                Icons.search,
+                Icons.explore,
               ),
               label: 'Search',
             ),

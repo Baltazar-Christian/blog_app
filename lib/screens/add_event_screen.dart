@@ -63,7 +63,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Add New Post',
+          'Create Event ',
           style: TextStyle(
               color: Color.fromARGB(
                   218, 228, 135, 4), // Replace with your desired text color
@@ -91,8 +91,27 @@ class _AddEventScreenState extends State<AddEventScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                Text(
+                  'Event Name',
+                  style: TextStyle(
+                      color: Color.fromARGB(218, 228, 135, 4), fontSize: 16),
+                ),
                 TextFormField(
-                  decoration: InputDecoration(labelText: 'Event Name'),
+                  style: TextStyle(color: Color.fromARGB(218, 228, 135, 4)),
+                  // Default text color
+                  cursorColor: Color.fromARGB(218, 228, 135, 4),
+                  decoration: InputDecoration(
+                    // labelText: 'Event Name',
+                    filled: true,
+                    fillColor:
+                        Color.fromARGB(218, 228, 135, 4).withOpacity(0.2),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                  ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter the event name.';
@@ -106,9 +125,29 @@ class _AddEventScreenState extends State<AddEventScreen> {
                   },
                 ),
                 SizedBox(height: 16.0),
+                Text(
+                  'Event Description',
+                  style: TextStyle(
+                      color: Color.fromARGB(218, 228, 135, 4), fontSize: 16),
+                ),
                 TextFormField(
+                  style: TextStyle(color: Color.fromARGB(218, 228, 135, 4)),
+                  // Default text color
+                  cursorColor: Color.fromARGB(218, 228, 135, 4),
                   maxLines: 3,
-                  decoration: InputDecoration(labelText: 'Event Description'),
+                  // decoration: InputDecoration(labelText: 'Event Description'),
+                  decoration: InputDecoration(
+                    // labelText: 'Event Name',
+                    filled: true,
+                    fillColor:
+                        Color.fromARGB(218, 228, 135, 4).withOpacity(0.2),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                  ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter the event description.';
@@ -124,6 +163,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                 SizedBox(height: 16.0),
                 DateTimePicker(
                   labelText: 'Start Date and Time',
+                  labelStyle: (),
                   selectedDate: startDate,
                   selectedTime: TimeOfDay.fromDateTime(startDate),
                   onSelectedDate: (DateTime date) {

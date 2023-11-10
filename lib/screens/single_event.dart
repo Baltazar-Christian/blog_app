@@ -30,12 +30,15 @@ class EventDetailScreen extends StatelessWidget {
                 children: [
                   Text(
                     event.eventName,
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black),
                   ),
                   SizedBox(height: 8),
                   Text(
                     event.eventDescription,
-                    style: TextStyle(fontSize: 16),
+                    style: TextStyle(fontSize: 16, color: Colors.black),
                   ),
                 ],
               ),

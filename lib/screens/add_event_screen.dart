@@ -163,7 +163,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                 SizedBox(height: 16.0),
                 DateTimePicker(
                   labelText: 'Start Date and Time',
-                  labelStyle: (),
+                  // labelStyle: (),
                   selectedDate: startDate,
                   selectedTime: TimeOfDay.fromDateTime(startDate),
                   onSelectedDate: (DateTime date) {
